@@ -298,3 +298,21 @@ func TestE2EFilter(t *testing.T) {
 	u.waitText("disabled gamma")
 	u.assertLayout()
 }
+
+func TestSyncFailsOnConflict(t *testing.T) {
+	e := newE2EEnv(t)
+	link := filepath.Join(e.target, "alpha")
+	if err := os.Remove(link); err != nil {
+		t.Fatal(err)
+	}
+	writeFile(t, filepath.Join(link, "SKILL.md"), "local\n")
+	cmd := exec.Command(e2eBin, "sync")
+	cmd.Env = e.env
+	out, err := cmd.CombinedOutput()
+	if err == nil || !strings.Contains(string(out), "alpha exists and is not managed") {
+		t.Fatalf("expected conflict failure, got %v:\n%s", err, out)
+	}
+	if data, _ := os.ReadFile(filepath.Join(link, "SKILL.md")); string(data) != "local\n" {
+		t.Fatal("local skill overwritten")
+	}
+}

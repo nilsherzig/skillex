@@ -118,6 +118,9 @@ func printLink(rep LinkReport, err error) error {
 		return err
 	}
 	fmt.Printf("links +%d -%d\n", rep.Added, rep.Removed)
+	if len(rep.Warnings) > 0 {
+		return fmt.Errorf("%d link conflict(s) left unresolved", len(rep.Warnings))
+	}
 	return nil
 }
 
