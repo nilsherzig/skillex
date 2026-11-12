@@ -282,7 +282,7 @@ func (m *model) listHeight() int {
 
 func (m *model) View() string {
 	var b strings.Builder
-	title := styleTitle.Render("skillman") + styleDim.Render("  "+m.app.Cfg.path)
+	title := styleTitle.Render("skillex") + styleDim.Render("  "+m.app.Cfg.path)
 	if m.filtering || m.filter != "" {
 		cursor := ""
 		if m.filtering {

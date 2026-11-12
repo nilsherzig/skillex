@@ -1,4 +1,4 @@
-module github.com/nilsherzig/skillman
+module github.com/nilsherzig/skillex
 
 go 1.26
 

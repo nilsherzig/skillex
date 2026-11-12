@@ -35,7 +35,7 @@ func DesiredLinks(sources []ResolvedSource) (map[string]Skill, error) {
 	return want, errors.Join(errs...)
 }
 
-// ManagedRoots are the directories whose links skillman owns. Links into them
+// ManagedRoots are the directories whose links skillex owns. Links into them
 // that are not wanted are removed; everything else in a target is left alone.
 func ManagedRoots(cfg *Config, sources []ResolvedSource, extra ...string) []string {
 	roots := append([]string{}, extra...)

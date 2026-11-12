@@ -76,20 +76,20 @@ func (s *Source) SetEnabled(id string, on bool) {
 }
 
 func defaultConfigPath() (string, error) {
-	if p := os.Getenv("SKILLMAN_CONFIG"); p != "" {
+	if p := os.Getenv("SKILLEX_CONFIG"); p != "" {
 		return p, nil
 	}
 	dir, err := os.UserConfigDir()
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(dir, "skillman", "skills.yaml"), nil
+	return filepath.Join(dir, "skillex", "skills.yaml"), nil
 }
 
 func LoadConfig(path string) (*Config, error) {
 	real, err := filepath.EvalSymlinks(expandHome(path))
 	if errors.Is(err, os.ErrNotExist) {
-		return nil, fmt.Errorf("no config at %s: link configs/skillman from the dotfiles to ~/.config/skillman (configs/link.sh does this), or pass -config / set SKILLMAN_CONFIG", path)
+		return nil, fmt.Errorf("no config at %s: link configs/skillex from the dotfiles to ~/.config/skillex (configs/link.sh does this), or pass -config / set SKILLEX_CONFIG", path)
 	}
 	if err != nil {
 		return nil, fmt.Errorf("config: %w", err)

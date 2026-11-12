@@ -21,16 +21,16 @@
         in
         {
           default = pkgs.buildGoModule {
-            pname = "skillman";
+            pname = "skillex";
             version = self.shortRev or "dirty";
             src = self;
             vendorHash = "sha256-f01JOwTLVtbLGf4a8QCjtbEjYDDlk1f1BaGx44dokGQ=";
             nativeBuildInputs = [ pkgs.makeWrapper ];
             nativeCheckInputs = [ pkgs.git ];
             postInstall = ''
-              wrapProgram $out/bin/skillman --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.git ]}
+              wrapProgram $out/bin/skillex --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.git ]}
             '';
-            meta.mainProgram = "skillman";
+            meta.mainProgram = "skillex";
           };
         }
       );

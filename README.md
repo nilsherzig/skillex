@@ -1,18 +1,18 @@
-# skillman
+# skillex
 
 Links agent skills (directories with a `SKILL.md`) from local directories and
 git repositories into agent homes such as `~/.claude/skills`.
 
 ```sh
-skillman                  # TUI: space toggles a skill, u updates and d removes a source
-skillman sync             # check out locked versions and relink
-skillman update [SOURCE]  # move git sources to their latest ref
-skillman list
+skillex                  # TUI: space toggles a skill, u updates and d removes a source
+skillex sync             # check out locked versions and relink
+skillex update [SOURCE]  # move git sources to their latest ref
+skillex list
 ```
 
-The config is `~/.config/skillman/skills.yaml` (or `-config` / `$SKILLMAN_CONFIG`);
+The config is `~/.config/skillex/skills.yaml` (or `-config` / `$SKILLEX_CONFIG`);
 git sources are pinned in `skills.lock` next to it and cloned to
-`~/.local/share/skillman/repos`. Only symlinks that point into a configured
+`~/.local/share/skillex/repos`. Only symlinks that point into a configured
 source are changed.
 
 ```yaml

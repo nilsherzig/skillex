@@ -22,11 +22,11 @@ const e2eCols, e2eRows = 100, 16
 var e2eBin string
 
 func TestMain(m *testing.M) {
-	dir, err := os.MkdirTemp("", "skillman-e2e-")
+	dir, err := os.MkdirTemp("", "skillex-e2e-")
 	if err != nil {
 		panic(err)
 	}
-	e2eBin = filepath.Join(dir, "skillman")
+	e2eBin = filepath.Join(dir, "skillex")
 	if out, err := exec.Command("go", "build", "-o", e2eBin, ".").CombinedOutput(); err != nil {
 		panic(fmt.Sprintf("build: %v\n%s", err, out))
 	}
@@ -51,7 +51,7 @@ func newE2EEnv(t *testing.T) *e2eEnv {
 	e.env = append(os.Environ(),
 		"HOME="+filepath.Join(e.dir, "home"),
 		"XDG_DATA_HOME="+filepath.Join(e.dir, "data"),
-		"SKILLMAN_CONFIG="+e.cfg,
+		"SKILLEX_CONFIG="+e.cfg,
 		"TERM=xterm-256color",
 		"GIT_CONFIG_GLOBAL=/dev/null",
 		"GIT_AUTHOR_NAME=t", "GIT_AUTHOR_EMAIL=t@example.invalid",
@@ -74,7 +74,7 @@ sources:
     enabled:
       - skills/gamma
 `, e.upstream))
-	// Clone before the TUI starts, like a normal first `skillman sync`.
+	// Clone before the TUI starts, like a normal first `skillex sync`.
 	cmd := exec.Command(e2eBin, "sync")
 	cmd.Env = e.env
 	if out, err := cmd.CombinedOutput(); err != nil {
@@ -134,7 +134,7 @@ func startTUI(t *testing.T, e *e2eEnv) *tui {
 		f.Close()
 		<-u.done
 	})
-	u.waitFor("first frame", func(s []string) bool { return strings.HasPrefix(s[0], "skillman") })
+	u.waitFor("first frame", func(s []string) bool { return strings.HasPrefix(s[0], "skillex") })
 	return u
 }
 
@@ -195,7 +195,7 @@ func (u *tui) assertLayout() {
 	if len(s) != e2eRows {
 		bad(fmt.Sprintf("%d lines", len(s)))
 	}
-	if !strings.HasPrefix(s[0], "skillman") {
+	if !strings.HasPrefix(s[0], "skillex") {
 		bad("title not on first line")
 	}
 	if s[1] != "" {

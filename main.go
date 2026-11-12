@@ -1,4 +1,4 @@
-// Command skillman links agent skills from local directories and pinned git
+// Command skillex links agent skills from local directories and pinned git
 // repositories into agent homes, driven by skills.yaml.
 package main
 
@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-const usage = `Usage: skillman [-config FILE] [command]
+const usage = `Usage: skillex [-config FILE] [command]
 
 Commands:
   (none), tui        interactive selection (space toggles, u updates, d removes a source)
@@ -17,13 +17,13 @@ Commands:
   update [SOURCE..]  move git sources (default: all) to their latest ref, then relink
   list               print all skills and whether they are enabled
 
-The config defaults to $SKILLMAN_CONFIG or ~/.config/skillman/skills.yaml.
+The config defaults to $SKILLEX_CONFIG or ~/.config/skillex/skills.yaml.
 The lock file skills.lock lives next to the real config file.
 `
 
 func main() {
 	if err := run(); err != nil {
-		fmt.Fprintln(os.Stderr, "skillman:", err)
+		fmt.Fprintln(os.Stderr, "skillex:", err)
 		os.Exit(1)
 	}
 }
@@ -33,7 +33,7 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	fs := flag.NewFlagSet("skillman", flag.ContinueOnError)
+	fs := flag.NewFlagSet("skillex", flag.ContinueOnError)
 	cfgPath := fs.String("config", defPath, "path to skills.yaml")
 	fs.Usage = func() { fmt.Fprint(os.Stderr, usage) }
 	if err := fs.Parse(os.Args[1:]); err != nil {
