@@ -24,7 +24,12 @@ func skill(t *testing.T, dir, name string) {
 // setup creates two local sources and a config with one target.
 func setup(t *testing.T) (*App, string, string) {
 	t.Helper()
-	dir := t.TempDir()
+	// Real path: the config path is resolved, and on macOS the temp
+	// directory lies behind the /tmp -> /private/tmp symlink.
+	dir, err := filepath.EvalSymlinks(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
 	t.Setenv("XDG_DATA_HOME", filepath.Join(dir, "data"))
 	skill(t, filepath.Join(dir, "own", "alpha"), "alpha")
 	skill(t, filepath.Join(dir, "own", "beta"), "beta")
@@ -124,6 +129,22 @@ func TestToggleSavesAndLinks(t *testing.T) {
 	}
 	if data, _ := os.ReadFile(cfg); strings.Contains(string(data), "disabled") {
 		t.Fatalf("empty disabled list kept:\n%s", data)
+	}
+}
+
+// A relative -config must still produce absolute link targets.
+func TestRelativeConfigLinksAbsolute(t *testing.T) {
+	_, dir, _ := setup(t)
+	t.Chdir(dir)
+	app := NewApp(filepath.Join("cfg", "skills.yaml"), nil)
+	if err := app.Load(nil); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := app.Link(); err != nil {
+		t.Fatal(err)
+	}
+	if got := links(t, filepath.Join(dir, "target"))["alpha"]; got != filepath.Join(dir, "own", "alpha") {
+		t.Fatalf("alpha links to %q", got)
 	}
 }
 

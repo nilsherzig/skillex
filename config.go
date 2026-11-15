@@ -87,7 +87,14 @@ func defaultConfigPath() (string, error) {
 }
 
 func LoadConfig(path string) (*Config, error) {
-	real, err := filepath.EvalSymlinks(expandHome(path))
+	// Absolute, because relative paths in the config resolve against its
+	// directory and become link targets: a relative -config would leave
+	// links pointing relative to the target directory instead.
+	abs, err := filepath.Abs(expandHome(path))
+	if err != nil {
+		return nil, fmt.Errorf("config: %w", err)
+	}
+	real, err := filepath.EvalSymlinks(abs)
 	if errors.Is(err, os.ErrNotExist) {
 		return nil, fmt.Errorf("no config at %s: link configs/skillex from the dotfiles to ~/.config/skillex (configs/link.sh does this), or pass -config / set SKILLEX_CONFIG", path)
 	}
